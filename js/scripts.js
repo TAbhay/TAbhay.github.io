@@ -5,7 +5,41 @@
     */
     (function($) {
     "use strict"; // Start of use strict
-  
+
+    var ele = $('#dark-mode');
+    ele.checked = true;
+    ele.click(function(){if(ele.checked){
+
+      $('header').removeClass('bg-secondary text-white').addClass('bg-secondary-light');
+      $('section').removeClass('bg-secondary text-white').addClass('bg-secondary-light');
+      $('.circle').removeClass('circle').addClass('circle-light');
+      $('.circle2').removeClass('circle2').addClass('circle2-light');
+      $('nav').removeClass('bg-secondary').addClass('bg-secondary-light');
+      $('#mainNav .navbar-nav li.nav-item a.nav-link').css({"color":"#121212"});
+      $('footer').removeClass('bg-secondary text-white').addClass('bg-secondary-light');
+      $('#copy-id').removeClass('text-white').css({"background-color":"#f7f7f7","color":"#121212"});
+      $('h2').removeClass('text-white').css({"color":"#121212"});
+      $('.divider-custom.divider-light .divider-custom-icon').css({"color":"#121212"});
+      $('.divider-custom.divider-light .divider-custom-line').css({"background-color":"#121212"});
+      
+
+      ele.checked =false;
+    }else{
+      console.log(ele.checked);
+     
+      $('header').removeClass('bg-secondary-light').addClass('text-white bg-secondary ');
+      $('section').removeClass('bg-secondary-light').addClass('bg-secondary text-white');
+      $('.circle-light').removeClass('circle-light').addClass('circle');
+      $('.circle2-light').removeClass('circle2-light').addClass('circle2');
+      $('nav').removeClass('bg-secondary-light').addClass('bg-secondary');
+      $('#mainNav .navbar-nav li.nav-item a.nav-link').css({"color":"#f7f7f7"});
+      $('footer').removeClass('bg-secondary-light').addClass('text-white bg-secondary ');
+      $('#copy-id').addClass('text-white').css({"background-color":"#121212"});
+      $('h2').addClass('text-white');
+      $('.divider-custom.divider-light .divider-custom-icon').css({"color":"#f7f7f7"});
+      $('.divider-custom.divider-light .divider-custom-line').css({"background-color":"#f7f7f7"});
+      ele.checked = true;
+    }});
     // Smooth scrolling using jQuery easing
     $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
       if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
