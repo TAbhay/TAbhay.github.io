@@ -3,9 +3,10 @@
     * Copyright 2013-2020 Start Bootstrap
     * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-freelancer/blob/master/LICENSE)
     */
+
     (function($) {
     "use strict"; // Start of use strict
-
+    
     var ele = $('#dark-mode');
     ele.checked = true;
     ele.click(function(){if(ele.checked){
@@ -22,7 +23,7 @@
       $('.divider-custom.divider-light .divider-custom-icon').css({"color":"#121212"});
       $('.divider-custom.divider-light .divider-custom-line').css({"background-color":"#121212"});
       $('.btn-outline-light').css({"color":"#121212","border-color":"#121212"});
-      $('.svg-inline--fa.fa-w-16').css({"color":"#121212"});
+      $('.svg-inline--fa.fa-w-16').removeClass('{"color":"#121212"}');
 
       ele.checked =false;
     }else{

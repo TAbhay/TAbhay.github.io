@@ -10437,3 +10437,57 @@ form .row:first-child .floating-label-form-group {
     background-color:#f7f7f7;
     color:#121212;
 }
+#canv{
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 100vw;
+  height: 40vh;
+  z-index: -1;
+}
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px 0;
+  padding: 10px;
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(236, 229, 229, 0.4);
+  text-align: center;
+  position: relative;
+}	
+.box-body{
+	width: 200px;
+	height: 10px;
+	position: absolute;
+	left: 50%;
+	top: 0%;
+	transform: translateX(-50%);
+	background-color:rgb(160, 80, 240); 
+	border-radius: 0px 0px 10px 10px;
+	display: none;
+	animation: bar 1s;
+  opacity: 1;
+}
+.box-item{
+
+}
+.box:hover{
+	box-shadow: 1px 1px 30px #f7f7f7;
+	transition: all ease 0.3s;
+}
+
+.box:hover .box-body{
+	display: block;
+}
+@keyframes bar{
+	0%{
+		width:0px;
+	}
+	100%{
+		width:200px;
+	}
+}
