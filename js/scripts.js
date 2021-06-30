@@ -24,6 +24,7 @@
       $('.divider-custom.divider-light .divider-custom-line').css({"background-color":"#121212"});
       $('.btn-outline-light').css({"color":"#121212","border-color":"#121212"});
       $('.svg-inline--fa.fa-w-16').removeClass('{"color":"#121212"}');
+      $('.svg-inline--fa.fa-w-16').css({"color":"#121212"});
 
       ele.checked =false;
     }else{
@@ -42,7 +43,6 @@
       $('.divider-custom.divider-light .divider-custom-line').css({"background-color":"#f7f7f7"});
       $('.btn-outline-light').css({"color":"#f7f7f7","border-color":"#f7f7f7"});
       $('.svg-inline--fa.fa-w-16').css({"color":"#f7f7f7"});
-      
       ele.checked = true;
     }});
     // Smooth scrolling using jQuery easing
