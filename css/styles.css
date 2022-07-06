@@ -9985,7 +9985,7 @@ h3 {
   }
 }
 .page-section {
-  padding: 6rem 0;
+  padding: 1rem 0;
 }
 .page-section .page-section-heading {
   font-size: 2.25rem;
@@ -10119,11 +10119,11 @@ h3 {
 }
 .masthead {
   padding-top: calc(6rem + 74px);
-  padding-bottom: 6rem;
+  padding-bottom: 2rem;
 }
 .masthead .masthead-heading {
-  font-size: 2.75rem;
-  line-height: 2.75rem;
+  font-size: 2rem;
+  line-height: 2rem;
 }
 .masthead .masthead-subheading {
   font-size: 1.25rem;
@@ -10156,14 +10156,32 @@ h3 {
   transition:1s;
 }
 .photo-img {
-    border-radius: 50%;
+    border-radius: 100%;
     overflow: hidden;
-    width:240px;
-    height: 240px;
+    width:235px;
+    height: 235px;
     border: 1px solid black;
+    margin-top: 5px;
+    margin-left: 5px;
 }
 .photo:hover{
   transform: scale(1.1);
+  
+}
+
+/* .photo {
+  position: relative;
+  cursor: pointer;
+  transition:1s;
+} */
+.photo-img-2 {
+    width:80px;
+    height: 80px;
+    margin-right: 10%;
+    transition: all 2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.photo-img-2:hover{
+  transform: rotate(-15deg);
   
 }
 .circle {
@@ -10247,11 +10265,11 @@ opacity:1
 @media (min-width: 992px) {
   .masthead {
     padding-top: calc(6rem + 104px);
-    padding-bottom: 6rem;
+    padding-bottom: 2rem;
   }
   .masthead .masthead-heading {
-    font-size: 4rem;
-    line-height: 3.5rem;
+    font-size: 3rem;
+    line-height: 3rem;
   }
   .masthead .masthead-subheading {
     font-size: 1.5rem;
@@ -10490,4 +10508,18 @@ form .row:first-child .floating-label-form-group {
 	100%{
 		width:200px;
 	}
+}
+
+.experience{
+   display: flex;
+   align-items: center;
+}
+.experience_card  ul {
+  margin-left: 2vw;
+}
+
+@media (max-width: 800px) {
+  .experience_card  h5 {
+    font-size: 16px;
+  }
 }
