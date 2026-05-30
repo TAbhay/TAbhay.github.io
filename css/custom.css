@@ -1,0 +1,785 @@
+/* ============================================================
+   Abhay Tiwari — Portfolio theme overrides
+   Single source of truth: theme driven by `body.light-mode`.
+   Accent palette echoes the original spinning-circle colors
+   (teal + amber) so it stays personal, not generic.
+   ============================================================ */
+
+:root {
+    --bg:            #0f1417;
+    --bg-alt:        #141b20;
+    --bg-card:       #18222a;
+    --bg-card-hover: #1e2932;
+    --nav-bg:        rgba(15, 20, 23, 0.88);
+    --hero-bg:       radial-gradient(circle at 50% -10%, #1a242c 0%, #0f1417 62%);
+
+    --text:       #e8eef0;
+    --text-soft:  #c3ccd1;
+    --text-muted: #8a979e;
+
+    --accent:        #2dd4bf;  /* teal  */
+    --accent-strong: #14b8a6;
+    --accent-warm:   #f0b429;  /* amber */
+
+    --border: rgba(255, 255, 255, 0.07);
+    --shadow: 0 14px 34px rgba(0, 0, 0, 0.40);
+    --radius: 12px;
+}
+
+body.light-mode {
+    --bg:            #f5f4ef;
+    --bg-alt:        #ffffff;
+    --bg-card:       #ffffff;
+    --bg-card-hover: #fbfaf5;
+    --nav-bg:        rgba(247, 246, 242, 0.92);
+    --hero-bg:       radial-gradient(circle at 50% -10%, #ffffff 0%, #efece4 70%);
+
+    --text:       #1e2a30;
+    --text-soft:  #44525a;
+    --text-muted: #6b7780;
+
+    --accent:        #0d9488;
+    --accent-strong: #0f766e;
+    --accent-warm:   #c2871a;
+
+    --border: rgba(20, 35, 35, 0.10);
+    --shadow: 0 14px 34px rgba(25, 45, 45, 0.08);
+}
+
+/* ---- Base ---- */
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Neutralise the old Bootstrap theme backgrounds so our vars win.
+   These selectors carry no !important, but neither do the originals
+   on the page once we drop the inline ones — so specificity wins. */
+.bg-secondary,
+.bg-primary,
+.bg-secondary-light {
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+}
+
+section.page-section:nth-of-type(even) {
+    background-color: var(--bg-alt) !important;
+}
+
+a { color: var(--accent); }
+a:hover { color: var(--accent-strong); }
+
+/* ---- Navbar ---- */
+#mainNav {
+    background: var(--nav-bg) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.4s ease, box-shadow 0.3s ease;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+#mainNav .brand-name span { color: var(--accent) !important; }
+
+#mainNav .navbar-nav {
+    align-items: center;
+}
+
+#mainNav .navbar-nav li.nav-item a.nav-link {
+    color: var(--text-soft) !important;
+    font-size: 0.78rem !important;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 0.45rem 0.65rem !important;
+    transition: color 0.25s ease;
+    background-color: transparent !important;
+}
+
+#mainNav .navbar-nav li.nav-item a.nav-link:hover,
+#mainNav .navbar-nav li.nav-item a.nav-link:focus,
+#mainNav .navbar-nav li.nav-item.active a.nav-link {
+    color: var(--accent) !important;
+    background-color: transparent !important;
+}
+
+/* Override Bootstrap's purple active state */
+.nav-link:focus,
+.nav-link:hover {
+    color: var(--accent) !important;
+}
+
+/* Kill the purple background on active nav links from styles.css */
+#mainNav .navbar-nav > li.nav-item > a.nav-link.active,
+#mainNav .navbar-nav > li.nav-item > a.nav-link.active:active,
+#mainNav .navbar-nav > li.nav-item > a.nav-link.active:focus,
+#mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover {
+    color: var(--accent) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+#mainNav .navbar-nav li.nav-item a.nav-link:hover {
+    color: var(--accent) !important;
+    background: transparent !important;
+}
+
+.navbar-shrink { box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+
+.navbar-toggler {
+    border-color: var(--accent) !important;
+    background: transparent !important;
+    color: var(--accent) !important;
+}
+
+@media (min-width: 992px) {
+    #mainNav .navbar-nav li.nav-item { 
+        margin: 0 !important;
+    }
+}
+
+/* ---- Toggle switch ---- */
+.toggle-switches .switch .slider {
+    background-color: var(--bg-card-hover);
+    border-color: var(--border);
+}
+.toggle-switches .switch input:checked + .slider {
+    background-color: var(--accent-strong);
+}
+.toggle-switches .switch .slider i {
+    color: var(--accent-warm);
+    font-size: 0.8rem;
+    margin-left: 4px;
+}
+
+/* ---- Masthead / Hero ---- */
+.masthead {
+    background: var(--hero-bg) !important;
+    position: relative;
+    padding-top: 4rem !important;
+    padding-bottom: 2rem !important;
+}
+
+.masthead-heading {
+    color: var(--text) !important;
+    letter-spacing: 1px;
+}
+
+.masthead-subheading {
+    color: var(--accent) !important;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+/* keep the spinning circles tuned to the accent colors */
+.circle {
+    border-color: var(--accent) transparent var(--accent) var(--accent) !important;
+}
+.circle2 {
+    border-color: var(--accent-warm) var(--accent-warm) var(--accent-warm) transparent !important;
+}
+.circle-light {
+    border-color: var(--accent-strong) transparent var(--accent-strong) var(--accent-strong) !important;
+}
+.circle2-light {
+    border-color: var(--accent-warm) var(--accent-warm) var(--accent-warm) transparent !important;
+}
+
+.photo-img {
+    border: 2px solid var(--border) !important;
+    box-shadow: var(--shadow);
+}
+
+/* ---- Section headings ---- */
+.page-section-heading {
+    color: var(--text) !important;
+    letter-spacing: 1px;
+    position: relative;
+    margin-top: 0 !important;
+    margin-bottom: 2.5rem !important;
+}
+
+.section-title-clean {
+    font-size: 1.8rem !important;
+    font-weight: 700;
+    color: var(--text) !important;
+    margin-top: 0 !important;
+    margin-bottom: 2rem !important;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+}
+
+@media (min-width: 992px) {
+    .section-title-clean {
+        font-size: 2.2rem !important;
+    }
+}
+
+.section-content {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text-soft) !important;
+}
+
+.section-content p {
+    margin-bottom: 1.2rem;
+    color: var(--text-soft) !important;
+}
+
+.section-content strong {
+    color: var(--text) !important;
+    font-weight: 600;
+}
+
+.landing-section-title {
+    font-size: 1.6rem !important;
+    font-weight: 700;
+    color: var(--text) !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--accent);
+}
+
+.landing-content {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-soft) !important;
+}
+
+.landing-content p {
+    margin-bottom: 1rem;
+}
+
+.landing-content strong {
+    color: var(--text) !important;
+    font-weight: 600;
+}
+
+h2.text-white { color: var(--text) !important; }
+
+.divider-custom .divider-custom-line {
+    background: linear-gradient(90deg, transparent, var(--accent)) !important;
+}
+.divider-custom .divider-custom-line:last-child {
+    background: linear-gradient(90deg, var(--accent), transparent) !important;
+}
+.divider-custom .divider-custom-icon {
+    color: var(--accent-warm) !important;
+}
+
+.divider-custom {
+    margin-top: 0 !important;
+    margin-bottom: 2.5rem !important;
+}
+
+/* ---- About ---- */
+.lead {
+    font-size: 1rem;
+    color: var(--text-soft) !important;
+    line-height: 1.8;
+    margin-bottom: 1.2rem !important;
+}
+.lead strong { color: var(--text) !important; font-weight: 700; }
+
+@media (min-width: 992px) {
+    .lead {
+        font-size: 1.05rem;
+    }
+}
+
+/* ---- Experience cards ---- */
+.experience { display: block; }
+
+.experience_card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.6rem;
+    margin-bottom: 1.4rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.experience_card:hover {
+    background: var(--bg-card-hover);
+    transform: translateX(4px);
+    box-shadow: var(--shadow);
+    border-left-color: var(--accent-warm);
+}
+
+.exp-top { margin-bottom: 0.7rem; }
+
+.exp-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--text) !important;
+    margin-bottom: 0.35rem;
+}
+
+.exp-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.exp-company { font-weight: 600; color: var(--accent) !important; font-size: 0.95rem; }
+.exp-date {
+    font-size: 0.76rem;
+    color: var(--text-muted) !important;
+    font-style: italic;
+    background: var(--bg-alt);
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+.exp-location {
+    font-size: 0.78rem;
+    color: var(--text-muted) !important;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+.experience_card ul { margin: 0; padding-left: 1.1rem; list-style: none; }
+.experience_card ul li {
+    position: relative;
+    font-size: 0.9rem;
+    color: var(--text-soft) !important;
+    margin-bottom: 0.45rem;
+    line-height: 1.65;
+    padding-left: 1rem;
+}
+.experience_card ul li::before {
+    content: '▹';
+    position: absolute;
+    left: -0.2rem;
+    color: var(--accent);
+}
+
+/* ---- Skills ---- */
+.skills-grid { display: flex; flex-direction: column; gap: 1.3rem; }
+
+.skill-category {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    transition: box-shadow 0.25s ease;
+}
+.skill-category:hover { box-shadow: var(--shadow); }
+
+.skill-category h5 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--accent) !important;
+    margin-bottom: 0.9rem;
+}
+.skill-category h5 i { color: var(--accent-warm); margin-right: 0.45rem; }
+
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.skill-tag {
+    display: inline-block;
+    padding: 0.32rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.78rem;
+    color: var(--text-soft) !important;
+    background: var(--bg-alt);
+    transition: all 0.2s ease;
+}
+.skill-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent) !important;
+    transform: translateY(-2px);
+}
+
+/* ---- Projects ---- */
+.box {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.7rem 1.3rem;
+    height: 100%;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.box:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent);
+}
+.box .box-item i { transition: transform 0.3s ease; }
+.box:hover .box-item i { transform: scale(1.12) rotate(-6deg); }
+
+.box h3 {
+    font-size: 1.15rem;
+    color: var(--text) !important;
+    margin: 0.9rem 0 0.6rem;
+    font-weight: 700;
+}
+.box p {
+    font-size: 0.9rem;
+    color: var(--text-soft) !important;
+    line-height: 1.65;
+    min-height: 64px;
+}
+.box .btn-outline-light {
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+.box .btn-outline-light:hover {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: var(--bg) !important;
+}
+
+/* ---- Achievements ---- */
+.achievements-list { list-style: none; padding: 0; }
+.achievements-list li {
+    position: relative;
+    padding: 1rem 0 1rem 2rem;
+    font-size: 0.98rem;
+    color: var(--text-soft) !important;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.7;
+}
+.achievements-list li:last-child { border-bottom: none; }
+.achievements-list li::before {
+    content: '\f005';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 1.1rem;
+    color: var(--accent-warm);
+    font-size: 0.8rem;
+}
+.achievements-list li b { color: var(--text) !important; }
+
+/* ---- Footer ---- */
+.footer {
+    background: var(--bg-alt) !important;
+    border-top: 1px solid var(--border);
+    padding: 3rem 0 2rem;
+}
+.footer h4 { color: var(--text) !important; font-size: 0.85rem; letter-spacing: 1.2px; }
+.footer .lead { color: var(--text-muted) !important; font-size: 0.92rem; }
+.footer .btn-outline-light {
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    border-radius: 8px;
+}
+.footer .btn-outline-light:hover {
+    background: var(--accent) !important;
+    color: var(--bg) !important;
+}
+
+.copyright {
+    background: var(--bg) !important;
+    color: var(--text-muted) !important;
+}
+#copy-id { background: var(--bg) !important; color: var(--text-muted) !important; }
+
+/* ---- Scroll to top ---- */
+.scroll-to-top a {
+    background: var(--accent) !important;
+    color: var(--bg) !important;
+    box-shadow: var(--shadow);
+}
+.scroll-to-top a:hover { background: var(--accent-strong) !important; }
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+    .exp-row { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+    .masthead-heading { font-size: 1.2rem !important; line-height: 1.4rem; }
+    .box p { min-height: auto; }
+}
+
+/* ---- Light-mode: neutralise Bootstrap's forced white text ---- */
+body.light-mode .text-white { color: var(--text) !important; }
+body.light-mode .masthead-subheading.text-white,
+body.light-mode .exp-company { color: var(--accent) !important; }
+
+/* ============================================================
+   Fixes: icon visibility, navbar width, heading sizes
+   ============================================================ */
+
+/* ---- Icon visibility (FontAwesome renders as SVG via all.js) ---- */
+/* Base theme forces white on .fa-w-16; make icons follow currentColor */
+.svg-inline--fa,
+.svg-inline--fa.fa-w-16 {
+    color: inherit !important;
+    fill: currentColor;
+}
+
+/* Social / project link buttons: icon takes the button's accent color */
+.btn-social {
+    width: 2.4rem;
+    height: 2.4rem;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.btn-social .svg-inline--fa,
+.btn-social i { color: var(--accent) !important; }
+
+.btn-social:hover .svg-inline--fa,
+.btn-social:hover i { color: var(--bg) !important; }
+
+/* Project card "feature" icons — pull off the old purple onto theme accent */
+.box-item .svg-inline--fa,
+.box-item i { color: var(--accent) !important; }
+
+/* ---- Heading sizes: trim the oversized base values ---- */
+.page-section .page-section-heading,
+.page-section-heading {
+    font-size: 1.7rem !important;
+    line-height: 1.9rem !important;
+    font-weight: 700;
+    margin-top: 0 !important;
+    margin-bottom: 2.5rem !important;
+}
+@media (min-width: 992px) {
+    .page-section .page-section-heading,
+    .page-section-heading {
+        font-size: 2.1rem !important;
+        line-height: 2.3rem !important;
+    }
+}
+
+/* Add spacing between sections */
+.page-section {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+}
+
+@media (max-width: 991px) {
+    .page-section {
+        padding-top: 3rem !important;
+        padding-bottom: 3rem !important;
+    }
+}
+
+.masthead-heading { font-size: 1.3rem !important; line-height: 1.5rem; white-space: nowrap; }
+@media (min-width: 992px) {
+    .masthead-heading { font-size: 1.5rem !important; line-height: 1.7rem; }
+}
+
+.masthead-subheading { font-size: 1rem !important; }
+@media (min-width: 992px) {
+    .masthead-subheading { font-size: 1.15rem !important; }
+}
+
+/* ============================================================
+   Split landing layout: hero left + experience right
+   ============================================================ */
+/* the hero wave (hi.png) — give it the same interactive feel */
+.photo-img-2 {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.photo-img-2:hover {
+    transform: rotate(-15deg) scale(1.1);
+}
+
+.nav-logo {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+.nav-logo:hover {
+    transform: rotate(-15deg) scale(1.1);
+}
+
+.landing-row {
+    min-height: calc(100vh - 80px);
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.landing-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.landing-name {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    margin-bottom: 0.6rem;
+}
+
+.landing-left .photo-img-2 {
+    width: 50px;
+    height: 50px;
+}
+
+.landing-left .masthead-subheading {
+    margin-top: 0.5rem;
+}
+
+.landing-right {
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+}
+
+.landing-right::-webkit-scrollbar {
+    width: 4px;
+}
+.landing-right::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 4px;
+}
+
+/* On mobile, stack vertically */
+@media (max-width: 991px) {
+    .landing-row {
+        min-height: auto;
+        padding-top: 2rem;
+    }
+    .landing-left {
+        padding-bottom: 1.5rem;
+    }
+    .landing-right {
+        max-height: none;
+        overflow-y: visible;
+        padding: 0 0.5rem;
+    }
+}
+
+/* ============================================================
+   Comprehensive responsive rules
+   ============================================================ */
+
+/* Extra small devices (phones, <576px) */
+@media (max-width: 575px) {
+    .masthead {
+        padding-top: 3.5rem !important;
+        padding-bottom: 1.5rem !important;
+    }
+    .landing-left {
+        padding: 1rem 0.5rem;
+    }
+    .landing-left .photo-img-2 {
+        width: 36px;
+        height: 36px;
+    }
+    .landing-name {
+        gap: 0.5rem;
+    }
+    .masthead-heading {
+        font-size: 1.1rem !important;
+        line-height: 1.3rem;
+    }
+    .masthead-subheading {
+        font-size: 0.85rem !important;
+    }
+    .landing-section-title {
+        font-size: 1.3rem !important;
+    }
+    .landing-content {
+        font-size: 0.85rem;
+    }
+    .experience_card {
+        padding: 1rem 1.1rem;
+    }
+    .experience_card ul li {
+        font-size: 0.82rem;
+    }
+    .exp-title {
+        font-size: 0.95rem;
+    }
+    .skill-category {
+        padding: 1rem 1.1rem;
+    }
+    .box {
+        padding: 1.3rem 1rem;
+        margin-bottom: 1rem;
+    }
+    .box h3 {
+        font-size: 1rem;
+    }
+    .box p {
+        font-size: 0.82rem;
+    }
+    .footer {
+        padding: 2rem 0 1.5rem;
+    }
+    .footer h4 {
+        font-size: 0.75rem;
+    }
+    .achievements-list li {
+        font-size: 0.88rem;
+        padding-left: 1.6rem;
+    }
+    .section-title-clean {
+        font-size: 1.5rem !important;
+    }
+    .page-section .page-section-heading,
+    .page-section-heading {
+        font-size: 1.5rem !important;
+        line-height: 1.7rem !important;
+    }
+}
+
+/* Small devices (landscape phones, 576px–767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .masthead-heading {
+        font-size: 1.5rem !important;
+    }
+    .landing-content {
+        font-size: 0.88rem;
+    }
+    .box {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Medium devices (tablets, 768px–991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .landing-row {
+        padding-top: 1.5rem;
+    }
+    .masthead-heading {
+        font-size: 1.6rem !important;
+    }
+    .landing-content {
+        font-size: 0.9rem;
+    }
+}
+
+/* Large devices (desktops, 992px+) — landing split layout */
+@media (min-width: 992px) {
+    .landing-row {
+        display: flex;
+        align-items: center;
+    }
+    .landing-left {
+        position: sticky;
+        top: 80px;
+    }
+}
+
+/* Extra large (1400px+) — cap content width for readability */
+@media (min-width: 1400px) {
+    .landing-content {
+        max-width: 600px;
+    }
+    .experience_card ul li {
+        max-width: 700px;
+    }
+}
