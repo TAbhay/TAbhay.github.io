@@ -72,6 +72,7 @@
         isStarting: false,
         wantsToPlay: false,
         isUnlocked: false,
+        lastTapSoundAt: 0,
         stopTimer: null,
 
         init: function () {
@@ -255,6 +256,49 @@
                 this.isPlaying = false;
                 console.warn("Web Audio failed to stop:", e);
             }
+        },
+
+        playTap: function () {
+            var self = this;
+            var nowMs = Date.now();
+            if (nowMs - this.lastTapSoundAt < 90) return;
+            this.lastTapSoundAt = nowMs;
+
+            this.resume().then(function () {
+                try {
+                    var ctx = self.audioCtx;
+                    if (!ctx || ctx.state !== 'running') return;
+                    var now = ctx.currentTime;
+                    var osc = ctx.createOscillator();
+                    var gain = ctx.createGain();
+                    var filter = ctx.createBiquadFilter();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(640, now);
+                    osc.frequency.exponentialRampToValueAtTime(380, now + 0.09);
+
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(1200, now);
+
+                    gain.gain.setValueAtTime(0.0001, now);
+                    gain.gain.exponentialRampToValueAtTime(0.045, now + 0.012);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.13);
+
+                    setTimeout(function () {
+                        try { osc.disconnect(); } catch (e) {}
+                        try { filter.disconnect(); } catch (e) {}
+                        try { gain.disconnect(); } catch (e) {}
+                    }, 180);
+                } catch (e) {
+                    console.warn('Tap sound failed:', e);
+                }
+            }).catch(function () {});
         }
     };
 
@@ -263,6 +307,17 @@
         JetSound.resume().catch(function (e) {
             console.warn('Global audio resume failed:', e);
         });
+    });
+
+    $(document).on('pointerdown', function (e) {
+        if ($(e.target).closest('#developerTerminal, #planeSoundHint').length) return;
+        JetSound.playTap();
+    });
+
+    $(document).on('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        if ($(e.target).closest('#developerTerminal').length) return;
+        JetSound.playTap();
     });
 
     var planeSoundHint = document.getElementById('planeSoundHint');
