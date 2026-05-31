@@ -69,92 +69,157 @@
         filterNode: null,
         gainNode: null,
         isPlaying: false,
+        isStarting: false,
+        wantsToPlay: false,
+        isUnlocked: false,
+        stopTimer: null,
 
         init: function () {
-            if (this.audioCtx) return;
-            var AudioContext = window.AudioContext || window.webkitAudioContext;
-            this.audioCtx = new AudioContext();
+            if (this.audioCtx) return true;
+            try {
+                var AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.audioCtx = new AudioContext();
+                return true;
+            } catch (e) {
+                console.warn('AudioContext initialization failed:', e);
+                this.audioCtx = null;
+                return false;
+            }
+        },
+
+        resume: function () {
+            var self = this;
+            if (!this.audioCtx && !this.init()) {
+                return Promise.reject(new Error('AudioContext unavailable'));
+            }
+            if (!this.audioCtx) return Promise.reject(new Error('AudioContext unavailable'));
+            if (this.audioCtx.state === 'suspended') {
+                return this.audioCtx.resume().then(function () {
+                    self.isUnlocked = self.audioCtx && self.audioCtx.state === 'running';
+                });
+            }
+            this.isUnlocked = this.audioCtx.state === 'running';
+            return Promise.resolve();
         },
 
         start: function () {
+            this.wantsToPlay = true;
             if (this.isPlaying) return;
+            if (this.isStarting) {
+                if (this.audioCtx && this.audioCtx.state === 'suspended') {
+                    var pendingSelf = this;
+                    this.resume().then(function () {
+                        pendingSelf.isStarting = false;
+                        pendingSelf.start();
+                    }).catch(function (e) {
+                        pendingSelf.isStarting = false;
+                        console.warn("Web Audio resume failed:", e);
+                    });
+                }
+                return;
+            }
+            this.isStarting = true;
             try {
                 this.init();
+                if (!this.audioCtx) {
+                    this.isStarting = false;
+                    return;
+                }
+
+                var self = this;
+                var play = function () {
+                    if (!self.wantsToPlay || self.isPlaying) {
+                        self.isStarting = false;
+                        return;
+                    }
+                    var ctx = self.audioCtx;
+                    var now = ctx.currentTime;
+
+                    // Create White Noise buffer for wind resistance / turbine roar
+                    var bufferSize = ctx.sampleRate * 2;
+                    var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    var data = buffer.getChannelData(0);
+                    for (var i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+
+                    self.noiseNode = ctx.createBufferSource();
+                    self.noiseNode.buffer = buffer;
+                    self.noiseNode.loop = true;
+
+                    // Low-pass filter with high resonance (Q) for wind sweep
+                    self.filterNode = ctx.createBiquadFilter();
+                    self.filterNode.type = 'lowpass';
+                    self.filterNode.frequency.setValueAtTime(220, now);
+                    self.filterNode.Q.setValueAtTime(4.5, now);
+
+                    // Sawtooth & Triangle oscillators for engine whine and core rumble
+                    self.osc1 = ctx.createOscillator();
+                    self.osc1.type = 'sawtooth';
+                    self.osc1.frequency.setValueAtTime(62, now); // low combustion rumble
+
+                    self.osc2 = ctx.createOscillator();
+                    self.osc2.type = 'triangle';
+                    self.osc2.frequency.setValueAtTime(124, now); // high turbine whine
+
+                    var oscGain = ctx.createGain();
+                    oscGain.gain.setValueAtTime(0.045, now);
+
+                    // Master gain
+                    self.gainNode = ctx.createGain();
+                    self.gainNode.gain.setValueAtTime(0, now);
+
+                    // Connections
+                    self.noiseNode.connect(self.filterNode);
+                    self.osc1.connect(oscGain);
+                    self.osc2.connect(oscGain);
+                    oscGain.connect(self.filterNode);
+                    self.filterNode.connect(self.gainNode);
+                    self.gainNode.connect(ctx.destination);
+
+                    // Start sources
+                    self.noiseNode.start(0);
+                    self.osc1.start(0);
+                    self.osc2.start(0);
+
+                    // Ramping parameters (Jet Engine takeoff simulation)
+                    self.gainNode.gain.linearRampToValueAtTime(0.18, now + 0.3);
+                    self.filterNode.frequency.exponentialRampToValueAtTime(1450, now + 0.7);
+                    self.osc1.frequency.exponentialRampToValueAtTime(190, now + 0.7);
+                    self.osc2.frequency.exponentialRampToValueAtTime(380, now + 0.7);
+
+                    self.isPlaying = true;
+                    self.isStarting = false;
+                };
+
                 if (this.audioCtx.state === 'suspended') {
-                    this.audioCtx.resume();
+                    this.audioCtx.resume().then(play).catch(function (e) {
+                        self.isStarting = false;
+                        console.warn("Web Audio resume failed:", e);
+                    });
+                } else {
+                    play();
                 }
-
-                var ctx = this.audioCtx;
-                var now = ctx.currentTime;
-
-                // Create White Noise buffer for wind resistance / turbine roar
-                var bufferSize = ctx.sampleRate * 2;
-                var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-                var data = buffer.getChannelData(0);
-                for (var i = 0; i < bufferSize; i++) {
-                    data[i] = Math.random() * 2 - 1;
-                }
-
-                this.noiseNode = ctx.createBufferSource();
-                this.noiseNode.buffer = buffer;
-                this.noiseNode.loop = true;
-
-                // Low-pass filter with high resonance (Q) for wind sweep
-                this.filterNode = ctx.createBiquadFilter();
-                this.filterNode.type = 'lowpass';
-                this.filterNode.frequency.setValueAtTime(220, now);
-                this.filterNode.Q.setValueAtTime(4.5, now);
-
-                // Sawtooth & Triangle oscillators for engine whine and core rumble
-                this.osc1 = ctx.createOscillator();
-                this.osc1.type = 'sawtooth';
-                this.osc1.frequency.setValueAtTime(62, now); // low combustion rumble
-
-                this.osc2 = ctx.createOscillator();
-                this.osc2.type = 'triangle';
-                this.osc2.frequency.setValueAtTime(124, now); // high turbine whine
-
-                var oscGain = ctx.createGain();
-                oscGain.gain.setValueAtTime(0.045, now);
-
-                // Master gain
-                this.gainNode = ctx.createGain();
-                this.gainNode.gain.setValueAtTime(0, now);
-
-                // Connections
-                this.noiseNode.connect(this.filterNode);
-                this.osc1.connect(oscGain);
-                this.osc2.connect(oscGain);
-                oscGain.connect(this.filterNode);
-                this.filterNode.connect(this.gainNode);
-                this.gainNode.connect(ctx.destination);
-
-                // Start sources
-                this.noiseNode.start(0);
-                this.osc1.start(0);
-                this.osc2.start(0);
-
-                // Ramping parameters (Jet Engine takeoff simulation)
-                this.gainNode.gain.linearRampToValueAtTime(0.18, now + 0.3);
-                this.filterNode.frequency.exponentialRampToValueAtTime(1450, now + 0.7);
-                this.osc1.frequency.exponentialRampToValueAtTime(190, now + 0.7);
-                this.osc2.frequency.exponentialRampToValueAtTime(380, now + 0.7);
-
-                this.isPlaying = true;
             } catch (e) {
+                this.isStarting = false;
                 console.warn("Web Audio failed to play:", e);
             }
         },
 
         stop: function () {
+            this.wantsToPlay = false;
+            this.isStarting = false;
             if (!this.isPlaying) return;
             try {
                 var ctx = this.audioCtx;
-                if (!ctx || !this.gainNode) return;
+                if (!ctx || !this.gainNode) {
+                    this.isPlaying = false;
+                    return;
+                }
                 var now = ctx.currentTime;
 
                 this.gainNode.gain.cancelScheduledValues(now);
-                this.gainNode.gain.setValueAtTime(this.gainNode.gain.value, now);
+                this.gainNode.gain.setValueAtTime(Math.max(this.gainNode.gain.value, 0.001), now);
                 this.gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
 
                 if (this.filterNode) {
@@ -168,16 +233,16 @@
                 var filt = this.filterNode;
                 var gn = this.gainNode;
 
-                setTimeout(function () {
+                this.stopTimer = setTimeout(function () {
                     try { noise.stop(); } catch (err) {}
                     try { o1.stop(); } catch (err) {}
                     try { o2.stop(); } catch (err) {}
                     
-                    noise.disconnect();
-                    o1.disconnect();
-                    o2.disconnect();
-                    filt.disconnect();
-                    gn.disconnect();
+                    try { noise.disconnect(); } catch (err) {}
+                    try { o1.disconnect(); } catch (err) {}
+                    try { o2.disconnect(); } catch (err) {}
+                    try { filt.disconnect(); } catch (err) {}
+                    try { gn.disconnect(); } catch (err) {}
                 }, 600);
 
                 this.noiseNode = null;
@@ -187,6 +252,7 @@
                 this.gainNode = null;
                 this.isPlaying = false;
             } catch (e) {
+                this.isPlaying = false;
                 console.warn("Web Audio failed to stop:", e);
             }
         }
@@ -194,11 +260,20 @@
 
     // Auto-initialize and resume audio context upon actual user gestures anywhere on the page
     $(document).on('click pointerdown touchstart keydown', function () {
-        JetSound.init();
-        if (JetSound.audioCtx && JetSound.audioCtx.state === 'suspended') {
-            JetSound.audioCtx.resume();
-        }
+        JetSound.resume().catch(function (e) {
+            console.warn('Global audio resume failed:', e);
+        });
     });
+
+    function unlockJetSoundAndContinue(callback) {
+        JetSound.isStarting = false;
+        JetSound.resume().then(function () {
+            if (typeof callback === 'function') callback();
+        }).catch(function (e) {
+            console.warn('Audio unlock failed:', e);
+            if (typeof callback === 'function') callback();
+        });
+    }
 
     // ========================================================================
     // CELESTIAL BACKGROUND CANVAS (Moon, Stars, Asteroids - Minimal Movement)
@@ -1110,39 +1185,38 @@
         }
     }
 
-    $('#mainNav').on('mouseenter', function (e) {
+    var flightHoverTarget = $('#mainNav');
+
+    flightHoverTarget.on('mouseenter pointerenter', function (e) {
         updateTunnelMouse.call(this, e);
         startBoost();
     });
 
-    $('#mainNav').on('mousemove', function (e) {
+    flightHoverTarget.on('mousemove pointermove', function (e) {
         updateTunnelMouse.call(this, e);
     });
 
-    $('#mainNav').on('click pointerdown touchstart keydown', function (e) {
-        JetSound.init();
-        if (JetSound.audioCtx) {
-            JetSound.audioCtx.resume();
-        }
+    flightHoverTarget.on('click pointerdown touchstart', function (e) {
         updateTunnelMouse.call(this, e);
-        startBoost();
+        unlockJetSoundAndContinue(function () {
+            startBoost();
+        });
     });
 
-    $('#mainNav').on('mouseleave', function () {
+    flightHoverTarget.on('mouseleave pointerleave', function () {
         stopBoost();
     });
 
-    $(planeContainer).on('mouseenter', function () {
+    $(planeContainer).on('mouseenter', function (e) {
+        updateTunnelMouse.call(this, e);
         startBoost();
     });
 
     // Direct click/tap is a guaranteed user gesture to unlock audio
     $(planeContainer).on('click pointerdown touchstart', function () {
-        JetSound.init();
-        if (JetSound.audioCtx) {
-            JetSound.audioCtx.resume();
-        }
-        startBoost();
+        unlockJetSoundAndContinue(function () {
+            startBoost();
+        });
     });
 
     // Animation Loop
@@ -1150,8 +1224,8 @@
         time += 0.035;
 
         if (isBoosted) {
-            targetSpeed = isLightSpeedJump ? 34 : 9.5;
-            py += (mouseY - py) * 0.10; // follow pointer with a restrained vertical drift
+            targetSpeed = isLightSpeedJump ? 42 : 12.4;
+            py += (mouseY - py) * 0.16; // follow pointer quickly while keeping the flight smooth
             if (!isLightSpeedJump && jumpCooldown <= 0) {
                 lightSpeedTimer -= 1;
                 if (lightSpeedTimer <= 0 && px > canvasWidth * 0.18 && px < canvasWidth * 0.82) {
@@ -1173,7 +1247,7 @@
         if (py > canvasHeight - shipHalfSize) py = canvasHeight - shipHalfSize;
 
         // Smooth speed adjustment
-        speed += (targetSpeed - speed) * 0.08;
+        speed += (targetSpeed - speed) * (isBoosted ? 0.22 : 0.08);
         px += speed;
 
         if (px > canvasWidth + 50) {
