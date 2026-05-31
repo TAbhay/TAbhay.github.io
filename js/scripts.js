@@ -309,6 +309,8 @@
         });
     });
 
+    $('#copyrightYear').text(new Date().getFullYear());
+
     $(document).on('pointerdown', function (e) {
         if ($(e.target).closest('#developerTerminal, #planeSoundHint').length) return;
         JetSound.playTap();
@@ -1446,6 +1448,7 @@
     var isLocked = false;
     var cmdHistory = [];
     var cmdIndex = 0;
+    var hasBootedTerminal = false;
 
     // Escape characters
     function escapeHTML(str) {
@@ -1498,6 +1501,22 @@
         }
 
         // Auto scroll to bottom
+        $terminalBody.scrollTop($terminalBody[0].scrollHeight);
+    }
+
+    function runTerminalCommand(cmdText) {
+        if (!cmdText || isLocked) return;
+        cmdHistory.push(cmdText);
+        cmdIndex = cmdHistory.length;
+        $hiddenInput.val('');
+        $promptInput.text('');
+        executeCommand(cmdText);
+    }
+
+    function printBootLine() {
+        if (hasBootedTerminal) return;
+        hasBootedTerminal = true;
+        $outputLog.append('<p class="terminal-success">Ready. Pick a command chip or type directly.</p>');
         $terminalBody.scrollTop($terminalBody[0].scrollHeight);
     }
 
@@ -1683,6 +1702,7 @@
         $terminal.removeClass('hidden');
         isTerminalOpen = true;
         $hiddenInput.focus();
+        printBootLine();
 
         // Welcome chime
         try {
@@ -1726,6 +1746,13 @@
         closeTerminal();
     });
 
+    $('.terminal-chip').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        runTerminalCommand($(this).data('terminal-command'));
+        $hiddenInput.focus();
+    });
+
     $terminal.on('click', function (e) {
         if ($(e.target).closest('.terminal-container').length === 0 && !isLocked) {
             closeTerminal();
@@ -1756,14 +1783,7 @@
 
         if (e.key === 'Enter') {
             var cmd = $(this).val();
-            $(this).val('');
-            $promptInput.text('');
-
-            if (cmd.trim()) {
-                cmdHistory.push(cmd);
-                cmdIndex = cmdHistory.length;
-            }
-            executeCommand(cmd);
+            runTerminalCommand(cmd);
         }
         else if (e.key === 'ArrowUp') {
             e.preventDefault();

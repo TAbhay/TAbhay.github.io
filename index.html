@@ -414,7 +414,7 @@
             </div>
         </footer>
         <div class="copyright py-4 text-center text-white" id="copy-id">
-            <div class="container"><small>© Abhay Tiwari 2025</small></div>
+            <div class="container"><small>© Abhay Tiwari <span id="copyrightYear"></span></small></div>
         </div>
         <!-- Scroll to Top Button-->
         <div class="scroll-to-top d-lg-none position-fixed">
@@ -445,17 +445,30 @@
                 
                 <!-- Scrollable Console Body -->
                 <div class="terminal-body" id="terminalBody">
-                    <pre class="terminal-ascii-art">
-     ___   .______    __    __       ___   ____    ____ 
-    /   \  |   _  \  |  |  |  |     /   \  \   \  /   / 
-   /  ^  \ |  |_)  | |  |__|  |    /  ^  \  \   \/   /  
-  /  /_\  \|   _  <  |   __   |   /  /_\  \  \_    _/   
- /  _____  \  |_)  | |  |  |  |  /  _____  \   |  |     
-/__/     \__\______/  |__|  |__| /__/     \__\  |__|     
-                    </pre>
+                    <div class="terminal-status-grid">
+                        <div>
+                            <span class="terminal-status-label">session</span>
+                            <strong>portfolio-shell</strong>
+                        </div>
+                        <div>
+                            <span class="terminal-status-label">mode</span>
+                            <strong>interactive</strong>
+                        </div>
+                        <div>
+                            <span class="terminal-status-label">status</span>
+                            <strong class="terminal-online">online</strong>
+                        </div>
+                    </div>
                     <div class="terminal-welcome">
                         <p>Welcome to the Developer Terminal. [Version 3.1.26-RELEASE]</p>
                         <p>Type <span class="cmd-highlight">help</span> to view all available commands. Press <span class="cmd-highlight">~</span> or click close to exit.</p>
+                    </div>
+                    <div class="terminal-command-chips" aria-label="Quick terminal commands">
+                        <button type="button" class="terminal-chip" data-terminal-command="about">about</button>
+                        <button type="button" class="terminal-chip" data-terminal-command="skills">skills</button>
+                        <button type="button" class="terminal-chip" data-terminal-command="experience">experience</button>
+                        <button type="button" class="terminal-chip" data-terminal-command="matrix">matrix</button>
+                        <button type="button" class="terminal-chip" data-terminal-command="clear">clear</button>
                     </div>
                     <div class="terminal-output-log" id="terminalOutputLog"></div>
                     <!-- Prompt line -->
