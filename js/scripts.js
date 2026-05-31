@@ -1241,7 +1241,7 @@
         time += 0.035;
 
         if (isBoosted) {
-            targetSpeed = isLightSpeedJump ? 42 : 12.4;
+            targetSpeed = isLightSpeedJump ? 42 : 8;
             py += (mouseY - py) * 0.16; // follow pointer quickly while keeping the flight smooth
             if (!isLightSpeedJump && jumpCooldown <= 0) {
                 lightSpeedTimer -= 1;
