@@ -10184,84 +10184,6 @@ h3 {
   transform: rotate(-15deg);
   
 }
-.circle {
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  width: 252px;
-  height: 252px;
-  border-radius: 50%;
-  border-width: 2px;
-  border-style: solid;
-  border-color: white transparent white white;
-  animation: circlespin 4s linear infinite;
-}
-
-.circle2 {
-  position: absolute;
-  border-radius: 50%;
-  border-width: 2px;
-  border-style: solid;
-  top: -10px;
-  left:-10px;
-  width: 268px;
-  height: 268px;
-  border-color: white white white transparent;
-  animation: circlespin2 3s linear infinite;
-}
-.circle-light{
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  width: 252px;
-  height: 252px;
-  border-radius: 50%;
-  border-width: 2px;
-  border-style: solid;
-  border-color: black transparent black black;
-  animation: circlespin 4s linear infinite;
-}
-.circle2-light {
-  position: absolute;
-  border-radius: 50%;
-  border-width: 2px;
-  border-style: solid;
-  top: -10px;
-  left:-10px;
-  width: 268px;
-  height: 268px;
-  border-color: black black black transparent;
-  animation: circlespin2 3s linear infinite;
-}
-@keyframes circlespin {
-  0% {
-    transform: rotate(0deg);
-   opacity:1
-  }
-  50% {
-    transform: rotate(180deg);
-opacity:0
-  }
-  100% {
-    transform: rotate(360deg);
-opacity:1
-  }
-}
-@keyframes circlespin2 {
-  0% {
-    transform: rotate(0deg);
-   opacity:1
-  }
-  
-  50% {
-    transform: rotate(180deg);
-   opacity:0
-  }
-  100% {
-    transform: rotate(360deg);
-     opacity:1  
-  }
-}
 @media (min-width: 992px) {
   .masthead {
     padding-top: calc(6rem + 104px);
@@ -10275,50 +10197,6 @@ opacity:1
     font-size: 1.5rem;
   }
 }
-.portfolio .portfolio-item {
-  cursor: pointer;
-  position: relative;
-  display: block;
-  max-width: 25rem;
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-.portfolio .portfolio-item .portfolio-item-caption {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: all 0.2s ease-in-out;
-  opacity: 0;
-  background-color: rgba(26, 188, 156, 0.9);
-}
-.portfolio .portfolio-item .portfolio-item-caption:hover {
-  opacity: 1;
-}
-.portfolio .portfolio-item .portfolio-item-caption .portfolio-item-caption-content {
-  font-size: 1.5rem;
-}
-
-.portfolio-modal .portfolio-modal-title {
-  font-size: 2.25rem;
-  line-height: 2rem;
-}
-@media (min-width: 992px) {
-  .portfolio-modal .portfolio-modal-title {
-    font-size: 3rem;
-    line-height: 2.5rem;
-  }
-}
-.portfolio-modal .close {
-  position: absolute;
-  z-index: 1;
-  right: 1.5rem;
-  top: 1rem;
-  font-size: 3rem;
-  line-height: 3rem;
-  color: rgb(102, 51, 153);
-  opacity: 1;
-}
-
 .floating-label-form-group {
   position: relative;
   border-bottom: 1px solid #e9ecef;
@@ -10377,69 +10255,6 @@ form .row:first-child .floating-label-form-group {
   color: rgb(255, 255, 255,0.9);
 }
 
-.toggle-switches {
-  width: 50px;
-  height: 50px;
-  float: left;
-  display: grid;
-  place-items: center;
-  -webkit-place-items: center;
-}
-
-
-.toggle-switches .switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height:28px;
-  margin: 0 10px;
-  padding: 5px;
-}
-
-.toggle-switches .switch .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgb(128, 128, 128);
-  border: 1px solid rgb(80, 79, 79);
-  border-radius: 100px;
-  font-size: 1em;
-  text-align: right;
-  color: rgb(128, 128, 128);
-  font-family: sans-serif;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  padding-top: 3px;
-  padding-right: 4px;
-  transition: all 0.5s;
-}
-
-.toggle-switches .switch .slider::after {
-  position: absolute;
-  top: 5px;
-  left: 6px;
-  content: " ";
-  display: block;
-  width: 18px;
-  height: 18px;
-  background-color: rgb(230, 230, 230);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 50%;
-  transition: all 0.5s;
-}
-
-.toggle-switches .switch input:checked + .slider {
-  background-color: rgb(7, 26, 44);
-  color: transparent;
-}
-
-.toggle-switches .switch input:checked + .slider::after {
-  transform: translateX(20px);
-  background-color: white;
- 
-}
 .svg-inline--fa {
   display: inline-block;
   font-size: inherit;
@@ -10450,18 +10265,6 @@ form .row:first-child .floating-label-form-group {
 .svg-inline--fa.fa-w-16 {
   width: 1em;
   color: white;
-}
-.bg-secondary-light{
-    background-color:#f7f7f7;
-    color:#121212;
-}
-#canv{
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  width: 100vw;
-  height: 40vh;
-  z-index: -1;
 }
 .box {
   display: flex;
