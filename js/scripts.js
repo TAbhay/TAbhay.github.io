@@ -312,14 +312,13 @@
     $('#copyrightYear').text(new Date().getFullYear());
 
     $(document).on('pointerdown', function (e) {
-        if ($(e.target).closest('#developerTerminal, #planeSoundHint').length) return;
+        if ($(e.target).closest('#developerTerminal, #planeSoundHint, #mainNav').length === 0) return;
         JetSound.playTap();
     });
 
     $(document).on('keydown', function (e) {
         if (e.key !== 'Enter' && e.key !== ' ') return;
         if ($(e.target).closest('#developerTerminal').length) return;
-        JetSound.playTap();
     });
 
     var planeSoundHint = document.getElementById('planeSoundHint');
@@ -1270,6 +1269,12 @@
 
     flightHoverTarget.on('mouseleave pointerleave', function () {
         stopBoost();
+    });
+
+    $(document).on('pointerdown touchstart', function (e) {
+        if ($(e.target).closest('#mainNav, #planeSoundHint').length === 0) {
+            stopBoost();
+        }
     });
 
     $(planeContainer).on('mouseenter', function (e) {
