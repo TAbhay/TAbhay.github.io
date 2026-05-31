@@ -1539,9 +1539,9 @@
 
     function printAbout() {
         var html = '<p class="terminal-heading">About Abhay Tiwari:</p>' +
-                   '<p>Backend & Platforms Software Engineer with 2.5+ years of experience engineering high-throughput, highly concurrent distributed systems and cloud database replica sets.</p>' +
-                   '<p>B.Tech graduate from the <span class="cmd-highlight">Indian Institute of Technology Patna (IIT Patna)</span> with an 8.06 CGPA.</p>' +
-                   '<p>Currently working as a Software Engineer at <span class="cmd-highlight">Riverbed Technology</span>. Previously built scalable tools at <span class="cmd-highlight">MicroStrategy</span> and cloud orchestration platforms at <span class="cmd-highlight">Jio Platforms</span>.</p>';
+                   '<p>Backend & Platforms Software Engineer with 2.5+ years of experience building APIs, distributed services, event-driven applications, and data movement systems.</p>' +
+                   '<p>B.Tech graduate from the <span class="cmd-highlight">Indian Institute of Technology Patna (IIT Patna)</span>. AWS Certified Solutions Architect - Associate.</p>' +
+                   '<p>Currently working as a Software Engineer at <span class="cmd-highlight">Riverbed Technology</span>. Known for debugging, code reviews, teamwork, leadership, ownership, and effective use of AI-assisted tools like Cursor and Claude.</p>';
         $outputLog.append(html);
     }
 
@@ -1549,8 +1549,11 @@
         var html = '<p class="terminal-heading">Classified Technical Competencies:</p>' +
                    '<p><span class="cmd-highlight">[Languages]</span> Java, Python, Go, JavaScript, C++</p>' +
                    '<p><span class="cmd-highlight">[Frameworks]</span> Spring Boot, FastAPI, Gin, Node.js, Express, React</p>' +
-                   '<p><span class="cmd-highlight">[Platforms/Infra]</span> Kubernetes, OpenShift, Docker, Helm, Terraform, ArgoCD</p>' +
-                   '<p><span class="cmd-highlight">[Databases]</span> MongoDB, MySQL, MariaDB, Cassandra, Redis, DynamoDB</p>' +
+                   '<p><span class="cmd-highlight">[Backend]</span> APIs, event-driven applications, distributed systems, data movement, service reliability</p>' +
+                   '<p><span class="cmd-highlight">[Engineering]</span> Debugging, code reviews, teamwork, leadership, ownership</p>' +
+                   '<p><span class="cmd-highlight">[AI Tools]</span> Cursor, Claude, AI-assisted debugging and development workflows</p>' +
+                   '<p><span class="cmd-highlight">[Cloud]</span> AWS Certified Solutions Architect - Associate, AWS, Azure, OCI, Kubernetes, OpenShift, Docker</p>' +
+                   '<p><span class="cmd-highlight">[Databases]</span> MongoDB, MySQL, MariaDB, Redis, DynamoDB</p>' +
                    '<p><span class="cmd-highlight">[Middleware]</span> Apache Kafka (High throughput streaming), REST APIs</p>';
         $outputLog.append(html);
     }
@@ -1558,13 +1561,13 @@
     function printExperience() {
         var html = '<p class="terminal-heading">Professional Career Timeline:</p>' +
                    '<p><span class="cmd-highlight">Riverbed Technology (Jan 2026 - Present)</span></p>' +
-                   '<p>  - Software Engineer designing platforms and cloud systems.</p>' +
+                   '<p>  - Data Express team: backend systems for high-speed, low-latency data movement across AWS, OCI, Azure, and same-cloud environments.</p>' +
                    '<p><span class="cmd-highlight">Strategy / MicroStrategy (Oct 2024 - Jan 2026)</span></p>' +
                    '<p>  - Developed migration APIs for 2,000+ customer environments.</p>' +
-                   '<p>  - Built MSTR-CLI in Go/Python to deploy container clusters.</p>' +
+                   '<p>  - Built MSTR-CLI in Go/Python for customer environment management and automation.</p>' +
                    '<p><span class="cmd-highlight">Jio Platforms Limited (Oct 2023 - Sep 2024)</span></p>' +
-                   '<p>  - Deployed Mimosa microservice environments in OpenShift clusters.</p>' +
-                   '<p>  - Configured HA Cassandra, MongoDB, and Redis cache clusters.</p>';
+                   '<p>  - Built Cluster Validation Engine in Go/React for cluster sanity checks, health reports, and bulk validations.</p>' +
+                   '<p>  - Developed backend workflows for Mimosa platform reliability, reporting, and performance validation.</p>';
         $outputLog.append(html);
     }
 
