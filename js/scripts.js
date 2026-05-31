@@ -265,9 +265,17 @@
         });
     });
 
+    var planeSoundHint = document.getElementById('planeSoundHint');
+
+    function hidePlaneSoundHint() {
+        if (!planeSoundHint) return;
+        planeSoundHint.classList.add('is-hidden');
+    }
+
     function unlockJetSoundAndContinue(callback) {
         JetSound.isStarting = false;
         JetSound.resume().then(function () {
+            hidePlaneSoundHint();
             if (typeof callback === 'function') callback();
         }).catch(function (e) {
             console.warn('Audio unlock failed:', e);
@@ -313,16 +321,16 @@
         celestialBgObjects = [
             {
                 type: 'sun',
-                x: 120,
-                y: 25,
-                size: 18,
+                x: celestialWidth * 0.58,
+                y: 86,
+                size: 15,
                 color: '#f59e0b',
                 speed: 0.02
             },
             {
                 type: 'saturn',
-                x: celestialWidth * 0.25,
-                y: 35,
+                x: celestialWidth * 0.82,
+                y: 70,
                 size: 11,
                 color: '#d8b4fe',
                 speed: 0.015
@@ -345,8 +353,8 @@
             },
             {
                 type: 'asteroid',
-                x: celestialWidth * 0.15,
-                y: 65,
+                x: celestialWidth * 0.42,
+                y: 72,
                 size: 5,
                 color: '#8a979e',
                 rotation: 0,
@@ -620,8 +628,8 @@
         celestialObjects = [
             {
                 type: 'sun',
-                x: 90,
-                y: 14,
+                x: canvasWidth * 0.56,
+                y: canvasHeight - 15,
                 size: 15,
                 color: '#f59e0b',
                 speed: 0
@@ -652,7 +660,7 @@
             },
             {
                 type: 'asteroid',
-                x: canvasWidth * 0.18,
+                x: canvasWidth * 0.32,
                 y: 48,
                 size: 4,
                 color: '#8a979e',
@@ -1214,6 +1222,15 @@
 
     // Direct click/tap is a guaranteed user gesture to unlock audio
     $(planeContainer).on('click pointerdown touchstart', function () {
+        unlockJetSoundAndContinue(function () {
+            startBoost();
+        });
+    });
+
+    $('#planeSoundHint').on('click pointerdown touchstart', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        updateTunnelMouse.call(tunnelElement || this, e);
         unlockJetSoundAndContinue(function () {
             startBoost();
         });

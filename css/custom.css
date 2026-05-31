@@ -1115,7 +1115,7 @@ body.light-mode .exp-company { color: var(--accent) !important; }
     box-shadow: none;
     margin: 0;
     padding: 0;
-    z-index: 1;
+    z-index: 5;
     pointer-events: none;
 }
 
@@ -1156,6 +1156,55 @@ body.light-mode .plane-tunnel {
     opacity: 0.76;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 24%, #000 76%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, #000 24%, #000 76%, transparent 100%);
+}
+
+.plane-sound-hint {
+    position: absolute;
+    right: clamp(1rem, 5vw, 5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 8;
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    border-radius: 999px;
+    padding: 0.32rem 0.74rem;
+    color: #e0f2fe;
+    background: rgba(8, 12, 16, 0.72);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.22);
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    opacity: 0.92;
+    pointer-events: auto;
+    transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+    white-space: nowrap;
+}
+
+.plane-sound-hint:hover,
+.plane-sound-hint:focus {
+    border-color: rgba(34, 211, 238, 0.85);
+    outline: none;
+    transform: translateY(-50%) scale(1.04);
+}
+
+.plane-sound-hint.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) scale(0.96);
+}
+
+body.light-mode .plane-sound-hint {
+    color: #075985;
+    background: rgba(255, 255, 255, 0.82);
+}
+
+@media (max-width: 768px) {
+    .plane-sound-hint {
+        right: 1rem;
+        font-size: 0.66rem;
+        padding: 0.3rem 0.58rem;
+    }
 }
 
 /* Interactive Space Freighter Container */
