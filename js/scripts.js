@@ -1033,14 +1033,14 @@
 
     // Flight variables
     var px = -50;
-    var py = 25;
+    var py = 31;
     var speed = 2.2;
     var targetSpeed = 2.2;
     var angle = 0;
     var time = 0;
     var barrelRoll = 0;
     var isBoosted = false;
-    var mouseY = 25;
+    var mouseY = 31;
     var shipHalfSize = 18;
     var lightSpeedTimer = 0;
     var isLightSpeedJump = false;
